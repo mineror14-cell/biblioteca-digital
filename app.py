@@ -1,7 +1,7 @@
 import streamlit as st
 from biblioteca import Libro, LibroDigital, Biblioteca
 
-st.set_page_config(page_title="Biblioteca Digital", page_icon="📚", layout="wide")
+st.set_page_config(page_title="Biblioteca", page_icon="📚", layout="wide")
 
 if 'biblio' not in st.session_state:
     st.session_state.biblio = Biblioteca()
@@ -11,8 +11,8 @@ if 'biblio' not in st.session_state:
     st.session_state.biblio.agregar(LibroDigital("Python Avanzado", "Guido van Rossum", "201", "PDF"))
 
 
-st.title("Panel de Control - Biblioteca Digital")
-st.caption("Gestión inteligente, moderna e interactiva de tu catálogo")
+st.title(" Biblioteca")
+st.caption(" Cada libro es una experiencia nueva")
 
 
 st.sidebar.header("Navegación")
