@@ -1,26 +1,26 @@
 import streamlit as st
 from biblioteca import Libro, LibroDigital, Biblioteca
 
-# Configuración de página
+
 st.set_page_config(page_title="Biblioteca Digital", page_icon="📚", layout="wide")
 
-# Inicializar la biblioteca en la sesión
+
 if 'biblio' not in st.session_state:
     st.session_state.biblio = Biblioteca()
-    # Libros iniciales de ejemplo
+    
     st.session_state.biblio.agregar(Libro("Cien años de soledad", "Gabriel García Márquez", "101"))
     st.session_state.biblio.agregar(Libro("El Principito", "Antoine de Saint-Exupéry", "102"))
     st.session_state.biblio.agregar(LibroDigital("Python Avanzado", "Guido van Rossum", "201", "PDF"))
 
-# Título y encabezado principal
+
 st.title(" Panel de Control - Biblioteca Digital")
 st.caption("Gestión inteligente, moderna e interactiva de tu catálogo")
 
-# Sidebar (Menú Lateral)
+
 st.sidebar.header(" Navegación")
 opcion = st.sidebar.radio("Selecciona una sección:", [" Catálogo de Libros", " Registrar Libro", " Buscar & Prestar"])
 
-# Métricas superiores sencillas
+
 col_m1, col_m2, col_m3 = st.columns(3)
 total_libros = len(st.session_state.biblio.libros)
 disponibles = sum(1 for l in st.session_state.biblio.libros if l.disponible)
@@ -32,7 +32,7 @@ col_m3.metric("En Préstamo", prestados)
 
 st.divider()
 
-# --- SECCIÓN 1: CATÁLOGO ---
+
 if opcion == " Catálogo de Libros":
     st.subheader(" Catálogo Actual")
     libros = st.session_state.biblio.libros
@@ -40,7 +40,7 @@ if opcion == " Catálogo de Libros":
     if not libros:
         st.info("No hay libros registrados en la biblioteca.")
     else:
-        # Mostramos los libros organizados en tarjetas limpia de 2 columnas
+        
         cols = st.columns(2)
         for i, libro in enumerate(libros):
             with cols[i % 2]:
@@ -57,7 +57,7 @@ if opcion == " Catálogo de Libros":
                     else:
                         st.error("Prestado")
 
-# --- SECCIÓN 2: REGISTRAR LIBRO ---
+
 elif opcion == " Registrar Libro":
     st.subheader("Añadir un Nuevo Libro")
     
@@ -87,8 +87,8 @@ elif opcion == " Registrar Libro":
             else:
                 st.warning("Por favor completa los campos requeridos.")
 
-# --- SECCIÓN 3: BUSCAR Y PRESTAR ---
-elif opcion == "🔍 Buscar & Prestar":
+
+elif opcion == "Buscar & Prestar":
     st.subheader("Gestión de Préstamos")
     
     codigo_buscar = st.text_input("Ingrese el Código del Libro a Buscar:")
@@ -100,18 +100,18 @@ elif opcion == "🔍 Buscar & Prestar":
             
             with st.container(border=True):
                 st.write(f"**Autor:** {encontrado.autor}")
-                st.write(f"**Estado:** {' Disponible' if encontrado.disponible else ' Prestado'}")
+                st.write(f"**Estado:** {'Disponible' if encontrado.disponible else 'Prestado'}")
                 
                 col_b1, col_b2 = st.columns(2)
                 with col_b1:
-                    if st.button(" Solicitar Préstamo", use_container_width=True):
+                    if st.button("Solicitar Préstamo", use_container_width=True):
                         if encontrado.prestar():
                             st.success("¡Préstamo realizado exitosamente!")
                             st.rerun()
                         else:
                             st.warning("Este libro ya está prestado.")
                 with col_b2:
-                    if st.button("↩Devolver Libro", use_container_width=True):
+                    if st.button("↩ Devolver Libro", use_container_width=True):
                         encontrado.devolver()
                         st.success("¡El libro ha sido devuelto!")
                         st.rerun()
